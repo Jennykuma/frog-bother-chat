@@ -33,7 +33,6 @@ export default {
 <style>
 #henchmen-list {
   color: #8FB339;
-  margin-bottom: 30vh;
 }
 
 .list-group-item.active {
