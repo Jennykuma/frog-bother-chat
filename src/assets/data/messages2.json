@@ -1,0 +1,24 @@
+{
+    "data": [
+    {
+        "id": 0,
+        "name": "Sonny",
+        "messages": []
+    },
+    {
+        "id": 1, 
+        "name": "Fredo", 
+        "messages": [] 
+    },
+    {
+        "id": 2, 
+        "name": "Michael", 
+        "messages": [] 
+    },
+    {
+        "id": 3, 
+        "name": "Jenny", 
+        "messages": [] 
+    }
+    ]
+}

@@ -17,11 +17,6 @@ export default {
   props: {
     henchmanID: Number,
     henchmenMessages: Array
-  },
-  data() {
-    return {
-      
-    }
   }
 }
 </script>
@@ -34,5 +29,9 @@ export default {
   
   border-color: #8FB339;
   border-style: solid;
+}
+
+#convo-log .list-group-item {
+  border-color: white;
 }
 </style>

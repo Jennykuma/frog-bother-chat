@@ -5,7 +5,8 @@
         <img width="26" height="26" style="margin-right: 2vh;" src="../assets/icons/froggo-displayimg.png">{{ henchman.name }}
       </b-list-group-item>
 
-      <b-button class="mt-3 mb-4" v-on:click="nudgeAll()">Alert All</b-button>
+      <b-button class="mt-4 mb-3" v-on:click="nudgeAll()">Alert All</b-button>
+      <b-button class="mt-1 mb-4" v-on:click="clearAll()">Clear All</b-button>
 
     </b-list-group>
   </div>
@@ -31,6 +32,9 @@ export default {
     },
     nudgeAll() {
       this.$emit('nudged');
+    },
+    clearAll() {
+      this.$emit('cleared');
     }
   }
 }

@@ -7,7 +7,7 @@
 
         <b-col sm="3">
           <label style="margin-left: 2vh;"><h6>Henchmen List:</h6></label>
-          <HenchmenList v-bind:henchmen="henchmen" @clicked="setClickedID" @nudged="nudgeAll"/>
+          <HenchmenList v-bind:henchmen="henchmen" @clicked="setClickedID" @nudged="nudgeAll" @cleared="clearAll"/>
         </b-col>
         
         <b-col sm="9">
@@ -34,7 +34,9 @@
 import NavBar from './components/NavBar.vue'
 import HenchmenList from './components/HenchmenList.vue'
 import ConvoLog from './components/ConvoLog.vue'
-import henchmenData from './assets/data/messages.json'
+import henchmenData from './assets/data/messages2.json'
+import ribbitSound from './assets/audio/ribbit.mp3'
+import nudgeSound from './assets/audio/nudge.mp3'
 
 export default {
   name: 'app',
@@ -53,10 +55,11 @@ export default {
     }
   },
   created() {
-    if(localStorage.getItem("henchmenData") === null) {
+    if(localStorage.getItem("henchmenData") == null) {
       this.henchmen = henchmenData.data;
-      localStorage.setItem('henchmenData', JSON.stringify(henchmenData));
+      localStorage.setItem('henchmenData', JSON.stringify(henchmenData.data));
     } else {
+      this.henchmen = henchmenData.data;
       var retrievedJSON = localStorage.getItem('henchmenData');
       var parsedObject = JSON.parse(retrievedJSON);
       this.henchmen = parsedObject;
@@ -72,7 +75,10 @@ export default {
     handleSubmit(event) {
       if(this.message != '') {
 
-        // We don't want any of that JavaScript <script> injection stuff in here
+        var ribbit = new Audio(ribbitSound);
+        ribbit.play();
+
+        // We don't want any of that JavaScript <script> injection / XSS stuff in here
         let regex = /<[^>]*>/g;
         if (regex.test(this.message)) {
           this.message = this.message.replace(regex, "") + " **String censored due to malicious input**";
@@ -96,11 +102,21 @@ export default {
       localStorage.setItem('henchmenData', data);
     },
     nudgeAll() {
+      var nudge = new Audio(nudgeSound);
+      nudge.play();
+      
       for(let henchmenIdx = 0; henchmenIdx < this.henchmen.length; henchmenIdx++) {
         this.henchmen[henchmenIdx].messages.push({ timestamp: new Date().toISOString().slice(0,10), message: "**!! NUDGE !!**"});
       }
       this.saveFile();
       this.scrollToBottom();
+    },
+    clearAll() {
+      localStorage.clear();
+      for(let henchmenIdx = 0; henchmenIdx < this.henchmen.length; henchmenIdx++) {
+        this.henchmen[henchmenIdx].messages = [];
+      }
+      this.saveFile();
     }
   }
 }
@@ -111,7 +127,7 @@ export default {
   background-color: white;
   border-color: #8FB339;
   border-style: solid;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 6px 9px rgba(0, 0, 0, 0.16), 0 6px 9px rgba(0, 0, 0, 0.23);
 
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
