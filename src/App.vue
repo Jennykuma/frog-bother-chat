@@ -2,24 +2,30 @@
   <div id="app">
     <b-container fluid>
       <NavBar />
+
       <b-row>
+
         <b-col sm="3">
-          <label style="margin-left: 2vh;"> Henchmen: </label>
-          <HenchmenList v-bind:henchmen="henchmen" @clicked="setClickedID"/>
+          <label style="margin-left: 2vh;"><h6>Henchmen List:</h6></label>
+          <HenchmenList v-bind:henchmen="henchmen" @clicked="setClickedID" @nudged="nudgeAll"/>
         </b-col>
+        
         <b-col sm="9">
-          <label> Chat Log: </label>
+          <label><h6>Chat Log:</h6></label>
           <ConvoLog v-bind:henchmanID="this.clickedID" v-bind:henchmenMessages="henchmen[this.clickedID].messages"/>
         </b-col>
       </b-row>
-      <b-row align-h="end">
-        <b-col sm="9" class="mt-5">
+
+      <b-row align-h="end" class="mt-4">
+        <b-col sm="9">
           <b-form inline @submit.prevent="handleSubmit(event)">
-            <b-input id="message-input" v-model="message"></b-input>
-            <b-button id="message-input-btn" type="submit">Ribbit</b-button>
+            <b-input style="width: 87%;" id="message-input" v-model="message" :maxlength="maxLength"></b-input>
+            <b-badge class="ml-2 mr-2" v-text="(maxLength - message.length)" variant="light"></b-badge>
+            <b-button class="ml-0" id="message-input-btn" type="submit">Ribbit</b-button>
           </b-form>
         </b-col>
       </b-row>
+
     </b-container>
   </div>
 </template>
@@ -39,6 +45,7 @@ export default {
   },
   data() {
     return {
+      maxLength: 80,
       clickedID: 0,
       message: '',
       timestamp: '',
@@ -64,6 +71,13 @@ export default {
     },
     handleSubmit(event) {
       if(this.message != '') {
+
+        // We don't want any of that JavaScript <script> injection stuff in here
+        let regex = /<[^>]*>/g;
+        if (regex.test(this.message)) {
+          this.message = this.message.replace(regex, "") + " **String censored due to malicious input**";
+        }
+
         this.henchmen[this.clickedID].messages.push({ timestamp: new Date().toISOString().slice(0,10), message: this.message});
         this.saveFile();
         this.message = '';
@@ -80,6 +94,13 @@ export default {
     saveFile() {
       const data = JSON.stringify(this.henchmen);
       localStorage.setItem('henchmenData', data);
+    },
+    nudgeAll() {
+      for(let henchmenIdx = 0; henchmenIdx < this.henchmen.length; henchmenIdx++) {
+        this.henchmen[henchmenIdx].messages.push({ timestamp: new Date().toISOString().slice(0,10), message: "**!! NUDGE !!**"});
+      }
+      this.saveFile();
+      this.scrollToBottom();
     }
   }
 }
@@ -105,8 +126,22 @@ export default {
 }
 
 #message-input-btn {
-  margin-left: 3%;
   border-color: rgba(0, 0, 0, 0.16);
   background-color: #8FB339;
+  width: 9%;
 }
+
+label {
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 600;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  #message-input-btn {
+    margin-top: 3vh;
+    width: 100%;
+  }
+}
+
 </style>
