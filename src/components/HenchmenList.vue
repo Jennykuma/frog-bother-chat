@@ -5,8 +5,9 @@
         <img width="26" height="26" style="margin-right: 2vh;" src="../assets/icons/froggo-displayimg.png">{{ henchman.name }}
       </b-list-group-item>
 
-      <b-button class="mt-4 mb-3" v-on:click="nudgeAll()">Alert All</b-button>
-      <b-button class="mt-1 mb-4" v-on:click="clearAll()">Clear All</b-button>
+      <label class="mt-4"><h6>Chat Options:</h6></label>
+      <b-button class="mt-1 mb-3" v-on:click="nudgeAll()">Nudge All Froggos</b-button>
+      <b-button class="mt-1 mb-4" v-on:click="clearAll()">Clear All Convos</b-button>
 
     </b-list-group>
   </div>
@@ -40,9 +41,11 @@ export default {
 }
 </script>
 
-<style>
-#henchmen-list {
-  color: #8FB339;
+<style lang="scss" scoped>
+@import "@/assets/styles/_variables.scss";
+
+label {
+  color: $label;
 }
 
 .list-group-flush .list-group-item {
@@ -50,11 +53,16 @@ export default {
 }
 
 .list-group-item.active {
-  background-color: #8FB339 !important;
+  background-color: $primary !important;
   border: white;
 }
 
-.b-button {
-  color: #333333;
+.btn-secondary {
+  background-color: $primary !important;
+  border: none;
+
+  :hover {
+    background-color: $primary-hover !important;
+  }
 }
 </style>

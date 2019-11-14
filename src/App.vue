@@ -4,25 +4,21 @@
       <NavBar />
 
       <b-row>
-
         <b-col sm="3">
-          <label style="margin-left: 2vh;"><h6>Henchmen List:</h6></label>
+          <label><h6>Henchmen List:</h6></label>
           <HenchmenList v-bind:henchmen="henchmen" @clicked="setClickedID" @nudged="nudgeAll" @cleared="clearAll"/>
         </b-col>
         
         <b-col sm="9">
           <label><h6>Chat Log:</h6></label>
+          <b-button pill size="sm" class="ml-2" @click="clearConvo"> Clear </b-button>
           <ConvoLog v-bind:henchmanID="this.clickedID" v-bind:henchmenMessages="henchmen[this.clickedID].messages"/>
         </b-col>
       </b-row>
 
       <b-row align-h="end" class="mt-4">
         <b-col sm="9">
-          <b-form inline @submit.prevent="handleSubmit(event)">
-            <b-input style="width: 87%;" id="message-input" v-model="message" :maxlength="maxLength"></b-input>
-            <b-badge class="ml-2 mr-2" v-text="(maxLength - message.length)" variant="light"></b-badge>
-            <b-button class="ml-0" id="message-input-btn" type="submit">Ribbit</b-button>
-          </b-form>
+          <ChatBar v-bind:message="this.message" v-bind:maxLength="this.maxLength" @onSubmitMessage="handleSubmit"/>
         </b-col>
       </b-row>
 
@@ -34,6 +30,7 @@
 import NavBar from './components/NavBar.vue'
 import HenchmenList from './components/HenchmenList.vue'
 import ConvoLog from './components/ConvoLog.vue'
+import ChatBar from './components/ChatBar.vue'
 import henchmenData from './assets/data/messages2.json'
 import ribbitSound from './assets/audio/ribbit.mp3'
 import nudgeSound from './assets/audio/nudge.mp3'
@@ -43,7 +40,8 @@ export default {
   components: {
     NavBar,
     HenchmenList,
-    ConvoLog
+    ConvoLog,
+    ChatBar,
   },
   data() {
     return {
@@ -70,10 +68,11 @@ export default {
   },
   methods: {
     setClickedID(id) {
-      this.clickedID = id;
+      this.clickedID = id; // ClickedID = id of btn that was clicked
     },
-    handleSubmit(event) {
-      if(this.message != '') {
+    handleSubmit(message, event) {
+      this.message = message;
+      if(this.message != '') { // Message is not empty
 
         var ribbit = new Audio(ribbitSound);
         ribbit.play();
@@ -89,12 +88,12 @@ export default {
         this.message = '';
         event.target.reset();
         this.scrollToBottom();
-      } else {
-        event.target.reset();
+      } else { // Message is empty
+        event.target.reset(); // Text field empty
         this.scrollToBottom();
       }
     },
-    scroll() {
+    scroll() { 
       document.getElementById('convo-log').scrollTop = document.getElementById('convo-log').scrollHeight;
     },
     saveFile() {
@@ -117,15 +116,21 @@ export default {
         this.henchmen[henchmenIdx].messages = [];
       }
       this.saveFile();
+    },
+    clearConvo() {
+      this.henchmen[this.clickedID].messages = [];
+      this.saveFile();
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import "@/assets/styles/_variables.scss";
+
 #app {
   background-color: white;
-  border-color: #8FB339;
+  border-color: $primary;
   border-style: solid;
   box-shadow: 0 6px 9px rgba(0, 0, 0, 0.16), 0 6px 9px rgba(0, 0, 0, 0.23);
 
@@ -137,27 +142,13 @@ export default {
   padding: 3vh;
 }
 
-#message-input {
-  width: 90%;
-}
-
-#message-input-btn {
-  border-color: rgba(0, 0, 0, 0.16);
-  background-color: #8FB339;
-  width: 9%;
-}
-
 label {
   color: rgba(0, 0, 0, 0.5);
   font-weight: 600;
 }
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-  #message-input-btn {
-    margin-top: 3vh;
-    width: 100%;
-  }
+.btn-secondary {
+  background-color: $primary;
+  border: none;
 }
-
 </style>

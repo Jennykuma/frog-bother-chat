@@ -7,7 +7,6 @@
         <strong>Vito Croakleone: </strong> {{ henchmenMessages[i].message }}
       </b-list-group-item>
     </b-list-group>
-
   </div>
 </template>
 
