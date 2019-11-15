@@ -7,8 +7,8 @@
       </b-list-group-item>
       
       <label class="mt-4"><h6>Chat Options:</h6></label>
-      <b-button class="mt-1 mb-2" @click="nudgeAll()">Nudge All Froggos</b-button>
-      <b-button class="mt-1" @click="clearAll()">Clear All Convos</b-button>
+      <b-button class="mt-1" @click="nudgeAll()">Nudge All Froggos</b-button>
+      <b-button class="mt-3 mb-3" @click="clearAll()">Clear All Convos</b-button>
 
     </b-list-group>
   </div>

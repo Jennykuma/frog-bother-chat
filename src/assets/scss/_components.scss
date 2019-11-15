@@ -11,7 +11,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   
-    margin: 9vh;
+    margin: 8vh;
     padding: 3vh;
 
     .btn-secondary {
@@ -27,7 +27,13 @@
     label {
         color: $colour-label;
     }
-  }
+}
+
+@media only screen and (max-width: 600px) {
+    #app {
+        margin: 4vh;
+    }
+}
 
 /* Navbar */
 #nav-bar {
