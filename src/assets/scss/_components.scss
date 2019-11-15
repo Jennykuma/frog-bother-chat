@@ -1,0 +1,109 @@
+/* App */
+
+#app {
+    background-color: $white;
+    border-color: $colour-primary;
+    border-style: $border-solid;
+    border-width: $border-thin;
+    box-shadow: 0 6px 9px rgba(0, 0, 0, 0.16), 0 6px 9px rgba(0, 0, 0, 0.23);
+  
+    font-family: $base-font-family, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  
+    margin: 9vh;
+    padding: 3vh;
+
+    .btn-secondary {
+        background-color: $colour-primary;
+        border: none;
+
+        &:hover {
+            background-color: $colour-hover;
+            cursor: pointer;
+        }
+    }
+
+    label {
+        color: $colour-label;
+    }
+  }
+
+/* Navbar */
+#nav-bar {
+    border-color: $colour-primary;
+    border-bottom-style: $border-solid;
+    border-width: $border-thin;
+
+    h4 {
+        font-weight: $name;
+    }
+
+    .navbar-brand {
+        white-space: normal;
+    }
+}
+
+/* Chat Log */
+#chat-log {
+    border-radius: $rounded;
+    height: 50vh;
+    overflow-y: auto;
+    
+    border-color: $colour-primary;
+    border-style: $border-solid;
+    border-width: $border-thin;
+
+    .list-group-item {
+        border-color: $white;
+    }
+}
+
+/* Henchmen List */
+#henchmen-list {
+    .list-group-flush .list-group-item {
+        border-radius: $rounded;
+    }
+
+    .list-group-item.active {
+        background-color: $colour-primary;
+        border-color: $white;
+    }
+}
+
+/* Chat Bar */
+#chat-bar {
+    
+    .emoji {
+        display: inline-block;
+        margin: 0 1% 0 1%;
+
+        .noSelect {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    #message-input {
+        width: 90%;
+    }
+    
+    #message-input-btn {
+        width: 8%;
+    }
+  
+    @media only screen and (max-width: 600px) {
+    #message-input-btn {
+      margin-top: 3vh;
+      width: 100%;
+    }
+  }
+}

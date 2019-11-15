@@ -5,23 +5,19 @@
 
       <b-row>
         <b-col sm="3">
-          <label><h6>Henchmen List:</h6></label>
-          <HenchmenList v-bind:henchmen="henchmen" @clicked="setClickedID" @nudged="nudgeAll" @cleared="clearAll"/>
+          <HenchmenList :henchmen="henchmen" @clicked-frog="setClickedID" @clicked-nudge-all="nudgeAll" @clicked-clear-all="clearAll"/>
         </b-col>
         
         <b-col sm="9">
-          <label><h6>Chat Log:</h6></label>
-          <b-button pill size="sm" class="ml-2" @click="clearConvo"> Clear </b-button>
-          <ConvoLog v-bind:henchmanID="this.clickedID" v-bind:henchmenMessages="henchmen[this.clickedID].messages"/>
+          <ChatLog :henchman-ID="this.clickedID" :henchmen-messages="henchmen[this.clickedID].messages" @clicked-clear-convo="clearConvo"/>
         </b-col>
       </b-row>
 
-      <b-row align-h="end" class="mt-4">
+      <b-row align-h="end" class="mt-2">
         <b-col sm="9">
-          <ChatBar v-bind:message="this.message" v-bind:maxLength="this.maxLength" @onSubmitMessage="handleSubmit"/>
+          <ChatBar ref="chatBar" :message="this.message" :max-length="this.maxLength" @on-submit-message="handleSubmit" @clicked-emoji="handleSubmit"/>
         </b-col>
       </b-row>
-
     </b-container>
   </div>
 </template>
@@ -29,7 +25,7 @@
 <script>
 import NavBar from './components/NavBar.vue'
 import HenchmenList from './components/HenchmenList.vue'
-import ConvoLog from './components/ConvoLog.vue'
+import ChatLog from './components/ChatLog.vue'
 import ChatBar from './components/ChatBar.vue'
 import henchmenData from './assets/data/messages2.json'
 import ribbitSound from './assets/audio/ribbit.mp3'
@@ -40,12 +36,12 @@ export default {
   components: {
     NavBar,
     HenchmenList,
-    ConvoLog,
+    ChatLog,
     ChatBar,
   },
   data() {
     return {
-      maxLength: 80,
+      maxLength: 100,
       clickedID: 0,
       message: '',
       timestamp: '',
@@ -53,6 +49,7 @@ export default {
     }
   },
   created() {
+    // Local storage deals with storing our messages + pulling them up to view on page reload
     if(localStorage.getItem("henchmenData") == null) {
       this.henchmen = henchmenData.data;
       localStorage.setItem('henchmenData', JSON.stringify(henchmenData.data));
@@ -65,14 +62,16 @@ export default {
   },
   updated() {
     this.scroll(); // When data is updated, scroll to the bottom
+    this.$refs.chatBar.$refs.input.focus(); // Always focus on the input element
   },
   methods: {
     setClickedID(id) {
       this.clickedID = id; // ClickedID = id of btn that was clicked
     },
     handleSubmit(message, event) {
+      var containsAllWhitespace = this.checkWhitespace(message); // check for whitespace in messages
       this.message = message;
-      if(this.message != '') { // Message is not empty
+      if(this.message != '' && !containsAllWhitespace) { // Message is not empty & not full of whitespace
 
         var ribbit = new Audio(ribbitSound);
         ribbit.play();
@@ -89,16 +88,9 @@ export default {
         event.target.reset();
         this.scrollToBottom();
       } else { // Message is empty
-        event.target.reset(); // Text field empty
-        this.scrollToBottom();
+        this.message = '';
+        event.target.reset();
       }
-    },
-    scroll() { 
-      document.getElementById('convo-log').scrollTop = document.getElementById('convo-log').scrollHeight;
-    },
-    saveFile() {
-      const data = JSON.stringify(this.henchmen);
-      localStorage.setItem('henchmenData', data);
     },
     nudgeAll() {
       var nudge = new Audio(nudgeSound);
@@ -120,35 +112,21 @@ export default {
     clearConvo() {
       this.henchmen[this.clickedID].messages = [];
       this.saveFile();
-    }
+    },
+    checkWhitespace(message) {
+      return message.match(/^\s+/) === null ? false : true;
+    },
+    scroll() { 
+      document.getElementById('chat-log').scrollTop = document.getElementById('chat-log').scrollHeight;
+    },
+    saveFile() {
+      const data = JSON.stringify(this.henchmen);
+      localStorage.setItem('henchmenData', data);
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/styles/_variables.scss";
-
-#app {
-  background-color: white;
-  border-color: $primary;
-  border-style: solid;
-  box-shadow: 0 6px 9px rgba(0, 0, 0, 0.16), 0 6px 9px rgba(0, 0, 0, 0.23);
-
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  margin: 9vh;
-  padding: 3vh;
-}
-
-label {
-  color: rgba(0, 0, 0, 0.5);
-  font-weight: 600;
-}
-
-.btn-secondary {
-  background-color: $primary;
-  border: none;
-}
+@import "@/assets/scss/_main.scss";
 </style>
