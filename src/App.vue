@@ -2,12 +2,12 @@
   <div id="app">
     <b-container fluid>
       <NavBar />
-
+      
       <b-row>
         <b-col sm="3">
           <HenchmenList :henchmen="henchmen" @clicked-frog="setClickedID" @clicked-nudge-all="nudgeAll" @clicked-clear-all="clearAll"/>
         </b-col>
-        
+
         <b-col sm="9">
           <ChatLog :henchman-ID="this.clickedID" :henchmen-messages="henchmen[this.clickedID].messages" @clicked-clear-convo="clearConvo"/>
         </b-col>
@@ -30,6 +30,7 @@ import ChatBar from './components/ChatBar.vue'
 import henchmenData from './assets/data/messages2.json'
 import ribbitSound from './assets/audio/ribbit.mp3'
 import nudgeSound from './assets/audio/nudge.mp3'
+import clearSound from './assets/audio/click.wav'
 
 export default {
   name: 'app',
@@ -103,6 +104,9 @@ export default {
       this.scrollToBottom();
     },
     clearAll() {
+      var clear = new Audio(clearSound);
+      clear.play();
+
       localStorage.clear();
       for(let henchmenIdx = 0; henchmenIdx < this.henchmen.length; henchmenIdx++) {
         this.henchmen[henchmenIdx].messages = [];
@@ -110,6 +114,9 @@ export default {
       this.saveFile();
     },
     clearConvo() {
+      var clear = new Audio(clearSound);
+      clear.play();
+
       this.henchmen[this.clickedID].messages = [];
       this.saveFile();
     },

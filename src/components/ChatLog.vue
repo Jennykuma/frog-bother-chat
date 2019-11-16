@@ -3,13 +3,11 @@
     <label><h6>Chat Log:</h6></label>
     <b-button pill size="sm" class="ml-2" @click="clearConvo()"> Clear </b-button>
     <div id="chat-log">
-      <b-list-group flush>
-        <b-list-group-item v-for="(msg, i) in henchmenMessages" v-bind:key="msg">
-          <i>{{ henchmenMessages[i].timestamp }}</i>
-          <br />
-          <strong>Vito Croakleone: </strong> {{ henchmenMessages[i].message }}
-        </b-list-group-item>
-      </b-list-group>
+      <p v-for="(msg, i) in henchmenMessages" v-bind:key="msg">
+        <i>{{ henchmenMessages[i].timestamp }}</i>
+        <br />
+        <img width="20" height="20" class="mr-2" src="../assets/icons/vito-displayimg.png"><strong>Vito: </strong> {{ henchmenMessages[i].message }}
+      </p>
     </div>
   </div>
 </template>
