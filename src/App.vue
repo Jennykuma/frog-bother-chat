@@ -4,18 +4,18 @@
       <NavBar />
       
       <b-row>
-        <b-col sm="3">
+        <b-col md="3">
           <HenchmenList :henchmen="henchmen" @clicked-frog="setClickedID" @clicked-nudge-all="nudgeAll" @clicked-clear-all="clearAll"/>
         </b-col>
 
-        <b-col sm="9">
-          <ChatLog :henchman-ID="this.clickedID" :henchmen-messages="henchmen[this.clickedID].messages" @clicked-clear-convo="clearConvo"/>
+        <b-col md="9">
+          <ChatLog :henchman-ID="clickedID" :henchmen-messages="henchmen[clickedID].messages" @clicked-clear-convo="clearConvo"/>
         </b-col>
       </b-row>
 
-      <b-row align-h="end" class="mt-2">
-        <b-col sm="9">
-          <ChatBar ref="chatBar" :message="this.message" :max-length="this.maxLength" @on-submit-message="handleSubmit" @clicked-emoji="handleSubmit"/>
+      <b-row align-h="end">
+        <b-col md="9">
+          <ChatBar ref="chatBar" :message="message" :max-length="maxLength" @on-submit-message="handleSubmit" @clicked-emoji="handleSubmit"/>
         </b-col>
       </b-row>
     </b-container>
@@ -56,20 +56,20 @@ export default {
       localStorage.setItem('henchmenData', JSON.stringify(henchmenData.data));
     } else {
       this.henchmen = henchmenData.data;
-      var retrievedJSON = localStorage.getItem('henchmenData');
+      var retrievedJSON = localStorage.getItem('henchmenData'); // We grab the henchmen data from local storage
       var parsedObject = JSON.parse(retrievedJSON);
       this.henchmen = parsedObject;
     }
   },
   updated() {
     this.scroll(); // When data is updated, scroll to the bottom
-    this.$refs.chatBar.$refs.input.focus(); // Always focus on the input element
+    this.$refs.chatBar.$refs.input.focus(); // Always focus on the input bar!
   },
   methods: {
     setClickedID(id) {
-      this.clickedID = id; // ClickedID = id of btn that was clicked
+      this.clickedID = id; // ClickedID = id of henchman that was clicked
     },
-    handleSubmit(message, event) {
+    handleSubmit(message) {
       var containsAllWhitespace = this.checkWhitespace(message); // check for whitespace in messages
       this.message = message;
       if(this.message != '' && !containsAllWhitespace) { // Message is not empty & not full of whitespace
@@ -86,22 +86,19 @@ export default {
         this.henchmen[this.clickedID].messages.push({ timestamp: new Date().toISOString().slice(0,10), message: this.message});
         this.saveFile();
         this.message = '';
-        event.target.reset();
-        this.scrollToBottom();
       } else { // Message is empty
         this.message = '';
-        event.target.reset();
       }
     },
     nudgeAll() {
       var nudge = new Audio(nudgeSound);
       nudge.play();
       
+      // Update each henchman's messages property
       for(let henchmenIdx = 0; henchmenIdx < this.henchmen.length; henchmenIdx++) {
         this.henchmen[henchmenIdx].messages.push({ timestamp: new Date().toISOString().slice(0,10), message: "**!! NUDGE !!**"});
       }
       this.saveFile();
-      this.scrollToBottom();
     },
     clearAll() {
       var clear = new Audio(clearSound);
@@ -117,7 +114,7 @@ export default {
       var clear = new Audio(clearSound);
       clear.play();
 
-      this.henchmen[this.clickedID].messages = [];
+      this.henchmen[this.clickedID].messages = []; // Empty the henchman's message
       this.saveFile();
     },
     checkWhitespace(message) {

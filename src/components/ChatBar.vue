@@ -1,11 +1,12 @@
 <template>
   <div id="chat-bar">
     <label><h6>Emojis: </h6></label>
+    
     <div class="emoji" v-for="emoji in emojiList" :key="emoji">
       <div class="noSelect" @click="addEmoji(emoji)">{{ emoji }}</div>
     </div>
     
-    <b-form @submit.prevent="handleSubmit(event)">
+    <b-form @submit.prevent="handleSubmit()">
       <div class="d-flex bd-highlight">
         <div class="flex-grow-1 bd-highlight"><b-input id="message-input" ref="input" autofocus=true v-model="message" :maxlength="maxLength"></b-input></div>
         <div class="ml-1 mr-1 bd-highlight"><b-badge v-text="(maxLength - message.length)" variant="light"></b-badge></div>

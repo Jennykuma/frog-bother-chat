@@ -1,9 +1,12 @@
 <template>
   <div id="henchmen-list">
     <label><h6>Henchmen List:</h6></label>
+    
     <b-list-group flush>
+      <!-- We use :key="henchmen.name" so that it gives Vue a hint that it can track each node's identity -->
       <b-list-group-item href="#" v-for="(henchman, i) in henchmen" :key="henchman.name" :class="{'active': activeFrog === i}" @click="getFrogID(i)">
-        <img width="26" height="26" style="margin-right: 2vh;" src="../assets/icons/froggo-displayimg.png">{{ henchman.name }}
+        <img width="26" height="26" style="margin-right: 2vh;" src="../assets/icons/froggo-displayimg.png">
+        {{ henchman.name }}
       </b-list-group-item>
       
       <label class="mt-4"><h6>Chat Options:</h6></label>

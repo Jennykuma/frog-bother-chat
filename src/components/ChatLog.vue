@@ -1,12 +1,14 @@
 <template>
   <div id="chat-box">
     <label><h6>Chat Log:</h6></label>
+
     <b-button pill size="sm" class="ml-2" @click="clearConvo()"> Clear </b-button>
     <div id="chat-log">
-      <p v-for="(msg, i) in henchmenMessages" v-bind:key="msg">
+      <p v-for="(message, i) in henchmenMessages" v-bind:key="message">
         <i>{{ henchmenMessages[i].timestamp }}</i>
         <br />
-        <img width="20" height="20" class="mr-2" src="../assets/icons/vito-displayimg.png"><strong>Vito: </strong> {{ henchmenMessages[i].message }}
+        <img width="20" height="20" class="mr-2" src="../assets/icons/vito-displayimg.png">
+        <strong>Vito: </strong> {{ henchmenMessages[i].message }}
       </p>
     </div>
   </div>
