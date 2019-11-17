@@ -58,8 +58,8 @@ export default {
       localStorage.setItem('henchmenData', JSON.stringify(henchmenData.data));
     } else {
       this.henchmen = henchmenData.data;
-      var retrievedJSON = localStorage.getItem('henchmenData'); // We grab the henchmen data from local storage
-      var parsedObject = JSON.parse(retrievedJSON);
+      const retrievedJSON = localStorage.getItem('henchmenData'); // We grab the henchmen data from local storage
+      const parsedObject = JSON.parse(retrievedJSON);
       this.henchmen = parsedObject;
     }
   },
@@ -72,11 +72,11 @@ export default {
       this.clickedID = id; // ClickedID = id of henchman that was clicked
     },
     handleSubmit(message) {
-      var containsAllWhitespace = this.checkWhitespace(message); // check for whitespace in messages
+      const containsAllWhitespace = this.checkWhitespace(message); // check for whitespace in messages
       this.message = message;
       if(this.message != '' && !containsAllWhitespace) { // Message is not empty & not full of whitespace
 
-        var ribbit = new Audio(ribbitSound);
+        const ribbit = new Audio(ribbitSound);
         ribbit.play();
 
         /* We don't want any of that JavaScript <script> injection / XSS stuff in 
@@ -98,7 +98,7 @@ export default {
       }
     },
     nudgeAll() {
-      var nudge = new Audio(nudgeSound);
+      const nudge = new Audio(nudgeSound);
       nudge.play();
       
       // Update each henchman's messages property
@@ -108,7 +108,7 @@ export default {
       this.saveFile();
     },
     clearAll() {
-      var clear = new Audio(clearSound);
+      const clear = new Audio(clearSound);
       clear.play();
 
       localStorage.clear();
@@ -118,7 +118,7 @@ export default {
       this.saveFile();
     },
     clearConvo() {
-      var clear = new Audio(clearSound);
+      const clear = new Audio(clearSound);
       clear.play();
 
       this.henchmen[this.clickedID].messages = []; // Empty the henchman's message
