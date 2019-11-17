@@ -4,7 +4,7 @@
       
       <b-navbar-brand class="ml-auto mr-0">
         <h4>
-          <img width="27" height="27" class="mr-3" src="../assets/icons/vito-displayimg.png">
+          <img width="27" height="27" class="mr-1" src="../assets/icons/vito-displayimg.png">
           Vito Croakleone
         </h4>
       </b-navbar-brand>

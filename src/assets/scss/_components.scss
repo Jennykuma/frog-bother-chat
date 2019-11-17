@@ -66,6 +66,12 @@
     }
 }
 
+@media only screen and (min-height: 500px) and (max-height: 800px) {
+    #chat-box {
+        height: 50vh;
+    }
+}
+
 /* Henchmen List */
 #henchmen-list {
 
@@ -79,41 +85,13 @@
     }
 }
 
-/* Emoji Bar */
-/*
-#emoji-bar {
-
-    .emoji {
-        display: inline-block;
-        margin: 0 1% 0 1%;
-
-        .noSelect {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        &:hover {
-            cursor: pointer;
-        }
-    }
-
-    @media only screen and (max-width: 760px) {
-        .emoji {
-            margin-top: 7vh;
-        }
-    }
-}
-*/
-
 /* Chat Bar */
 #chat-bar {
+
     .emoji {
         display: inline-block;
         margin: 0 1% 0 1%;
+        
         .noSelect {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -135,8 +113,8 @@
     }
 }
 
-@media only screen and (min-width: 1600px) {
+@media only screen and (min-width: 1400px) {
     #chat-bar {
-        margin-top: 4vh;
+        margin-top: 5vh;
     }
 }
