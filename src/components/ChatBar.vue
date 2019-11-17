@@ -1,11 +1,9 @@
 <template>
   <div id="chat-bar">
     <label><h6>Emojis: </h6></label>
-    
     <div class="emoji" v-for="emoji in emojiList" :key="emoji">
       <div class="noSelect" @click="addEmoji(emoji)">{{ emoji }}</div>
     </div>
-    
     <b-form @submit.prevent="handleSubmit()">
       <div class="d-flex bd-highlight">
         <div class="flex-grow-1 bd-highlight"><b-input id="message-input" ref="input" autofocus=true v-model="message" :maxlength="maxLength"></b-input></div>
@@ -25,15 +23,15 @@ export default {
   },
   data() {
     return {
-      emojiList: ['🐸', '🚬', '🐴', '🔫', '🐟', '🤵', '👥']
+      emojiList: ['🐸', '🚬', '🐴', '🔫', '🐟', '🤵']
     }
   },
   methods: {
     handleSubmit() {
-      this.$emit('on-submit-message', this.message, event);
+      this.$emit('on-submit-message', this.message);
     },
     addEmoji(emoji) {
-      this.$emit('clicked-emoji', emoji, event);
+      this.$emit('clicked-emoji', emoji);
     }
   }
 }

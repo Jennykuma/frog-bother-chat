@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <b-container fluid>
+
       <NavBar />
       
       <b-row>
@@ -18,6 +19,7 @@
           <ChatBar ref="chatBar" :message="message" :max-length="maxLength" @on-submit-message="handleSubmit" @clicked-emoji="handleSubmit"/>
         </b-col>
       </b-row>
+
     </b-container>
   </div>
 </template>
@@ -38,7 +40,7 @@ export default {
     NavBar,
     HenchmenList,
     ChatLog,
-    ChatBar,
+    ChatBar
   },
   data() {
     return {
@@ -51,7 +53,7 @@ export default {
   },
   created() {
     // Local storage deals with storing our messages + pulling them up to view on page reload
-    if(localStorage.getItem("henchmenData") == null) {
+    if(localStorage.getItem('henchmenData') == null) {
       this.henchmen = henchmenData.data;
       localStorage.setItem('henchmenData', JSON.stringify(henchmenData.data));
     } else {
@@ -77,11 +79,16 @@ export default {
         var ribbit = new Audio(ribbitSound);
         ribbit.play();
 
-        // We don't want any of that JavaScript <script> injection / XSS stuff in here
+        /* We don't want any of that JavaScript <script> injection / XSS stuff in 
         let regex = /<[^>]*>/g;
         if (regex.test(this.message)) {
           this.message = this.message.replace(regex, "") + " **String censored due to malicious input**";
         }
+        */
+
+        // 5 characters: < > " ' &
+        // should always be escaped in HTML because we don't want it to mess with our markup
+        this.message = this.message.replace('&', '&amp;').replace("<", "&lt;").replace('>', '&gt;').replace('"', '&quot;').replace('\'', 'apos;');
 
         this.henchmen[this.clickedID].messages.push({ timestamp: new Date().toISOString().slice(0,10), message: this.message});
         this.saveFile();
