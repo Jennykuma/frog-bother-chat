@@ -6,7 +6,7 @@
     </div>
     <b-form @submit.prevent="handleSubmit()">
       <div class="d-flex bd-highlight">
-        <div class="flex-grow-1 bd-highlight"><b-input id="message-input" ref="input" autofocus=true v-model="message" :maxlength="maxLength"></b-input></div>
+        <div class="flex-grow-1 bd-highlight"><b-input required id="message-input" ref="input" autofocus=true type="text" v-model="message" :maxlength="maxLength"></b-input>  </div>
         <div class="ml-1 mr-1 bd-highlight"><b-badge v-text="(maxLength - message.length)" variant="light"></b-badge></div>
         <div class="bd-highlight"><b-button id="message-input-btn" type="submit">Ribbit</b-button></div>
       </div>

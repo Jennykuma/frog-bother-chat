@@ -88,7 +88,7 @@ export default {
 
         // 5 characters: < > " ' &
         // should always be escaped in HTML because we don't want it to mess with our markup
-        this.message = this.message.replace('&', '&amp;').replace("<", "&lt;").replace('>', '&gt;').replace('"', '&quot;').replace('\'', 'apos;');
+        this.message = this.message.replace('&', '&amp;').replace("<", "&lt;").replace('>', '&gt;').replace('"', '&quot;').replace('\'', '&#39;');
 
         this.henchmen[this.clickedID].messages.push({ timestamp: new Date().toISOString().slice(0,10), message: this.message});
         this.saveFile();
